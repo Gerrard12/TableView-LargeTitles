@@ -10,10 +10,24 @@ import UIKit
 
 class CollectionViewController: UIViewController {
 
+    @IBOutlet weak var collection: UICollectionView!
+    private let refreshControl = UIRefreshControl()
+    private let searchController = UISearchController(searchResultsController: nil)
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        // Do any additional setup after loading the view.
+        refreshControl.addTarget(self, action: #selector(refresh(sender:)), for: .valueChanged)
+        refreshControl.tintColor = #colorLiteral(red: 1, green: 1, blue: 1, alpha: 1)
+        
+        if #available(iOS 11.0, *) {
+            navigationController?.navigationBar.prefersLargeTitles = true
+            navigationController?.navigationBar.largeTitleTextAttributes = [NSAttributedStringKey.foregroundColor: UIColor.white]
+            collection.refreshControl  = refreshControl
+            navigationItem.searchController = searchController
+            
+        } else {
+            collection.addSubview(refreshControl)
+            
+        }
     }
 
     override func didReceiveMemoryWarning() {
@@ -21,6 +35,11 @@ class CollectionViewController: UIViewController {
         // Dispose of any resources that can be recreated.
     }
     
+    @objc func refresh(sender:AnyObject) {
+        DispatchQueue.main.asyncAfter(wallDeadline: .now() + 2) {
+            self.refreshControl.endRefreshing()
+        }
+    }
 
     /*
     // MARK: - Navigation

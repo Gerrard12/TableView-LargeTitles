@@ -20,5 +20,9 @@ class TypeSearchTableViewCell: UITableViewCell {
 
         // Configure the view for the selected state
     }
+    @IBAction func update(_ sender: UIButton) {
+        
+        print("Actualizar")
+    }
     
 }
